@@ -31,4 +31,7 @@ A API permite as seguintes operações:
    npm run dev
 O servidor ficará disponível em: http://localhost:3000
 
+## 🛣️ Endpoints da API
+<img width="468" height="352" alt="IMG" src="https://github.com/user-attachments/assets/c541362e-c578-45c2-b164-8a2b5e22cc78" />
+
 Desenvolvido por Fagner Santos 🚀
