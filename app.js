@@ -46,21 +46,34 @@ app.post('/tasks', (req, res) => {
 app.put('/tasks/:id', (req, res) => {
   const { id } = req.params;
   const { title, completed } = req.body;
-  const tasks = readTasks(); // Lê as tarefas do arquivo
-  const task = tasks.find(t => t.id === parseInt(id));
+  
+  let tasks = readTasks(); // Lê o que está no arquivo
+  const taskIndex = tasks.findIndex(t => t.id === parseInt(id));
 
-  if (!task) return res.status(404).json({ error: "Não encontrada" });
+  if (taskIndex === -1) {
+    return res.status(404).json({ error: "Tarefa não encontrada" });
+  }
 
-  if (title !== undefined) task.title = title;
-  if (completed !== undefined) task.completed = completed;
+  // Atualiza os campos se eles existirem no corpo da requisição
+  if (title !== undefined) tasks[taskIndex].title = title;
+  if (completed !== undefined) tasks[taskIndex].completed = completed;
 
-  res.json(task);
+  saveTasks(tasks); // Salva a lista atualizada de volta no arquivo
+  res.json(tasks[taskIndex]);
 });
 
 // DELETAR (DELETE) - Verifique se esta parte está no seu arquivo!
 app.delete('/tasks/:id', (req, res) => {
   const { id } = req.params;
-  tasks = tasks.filter(t => t.id !== parseInt(id));
+  const tasks = readTasks();
+  
+  const newTasks = tasks.filter(t => t.id !== parseInt(id));
+
+  if (tasks.length === newTasks.length) {
+    return res.status(404).json({ error: "Tarefa não encontrada" });
+  }
+
+  saveTasks(newTasks); // Salva a nova lista (sem a tarefa deletada)
   res.status(204).send();
 });
 
