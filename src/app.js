@@ -3,6 +3,7 @@ const taskRoutes = require('./routes/tasks');
 
 const app = express();
 app.use(express.json());
+app.use(express.static('public'));
 
 // Todas as rotas de tarefas agora começam com /tasks
 app.use('/tasks', taskRoutes);
